@@ -1,5 +1,6 @@
 
 import os
+print("DEBUG VARS:", dict(os.environ))  # ⬅️ ДОБАВЬ ЭТО СЮДА
 import json
 from google.oauth2 import service_account
 
