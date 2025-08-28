@@ -1,11 +1,23 @@
-
 import os
-print("DEBUG VARS:", dict(os.environ))  # ⬅️ ДОБАВЬ ЭТО СЮДА
 import json
+import logging
+import gspread
 from google.oauth2 import service_account
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
+# === DEBUG: показать все переменные окружения в Railway ===
+print("DEBUG VARS:", dict(os.environ))
+
+# === Настройки ===
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
+# Обязательно добавь эти переменные в Railway (.env):
+SPREADSHEET_URL = os.environ["SPREADSHEET_URL"]
+SHEET_NAME = os.environ["SHEET_NAME"]
+TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
+
+# === Авторизация Google Sheets через переменные Railway ===
 service_account_info = {
     "type": os.environ["GOOGLE_TYPE"],
     "project_id": os.environ["GOOGLE_PROJECT_ID"],
@@ -53,5 +65,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-# redeploy trigger
-# trigger redeploy
