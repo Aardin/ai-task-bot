@@ -4,6 +4,8 @@ print("DEBUG VARS:", dict(os.environ))  # ⬅️ ДОБАВЬ ЭТО СЮДА
 import json
 from google.oauth2 import service_account
 
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+
 service_account_info = {
     "type": os.environ["GOOGLE_TYPE"],
     "project_id": os.environ["GOOGLE_PROJECT_ID"],
