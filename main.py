@@ -1,19 +1,22 @@
 
 import os
-import logging
-import gspread
-from google.oauth2.service_account import Credentials
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+import json
+from google.oauth2 import service_account
 
-# === НАСТРОЙКИ ===
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
-SHEET_NAME = "Tasks"
-SPREADSHEET_URL = os.environ.get("SPREADSHEET_URL")
+service_account_info = {
+    "type": os.environ["GOOGLE_TYPE"],
+    "project_id": os.environ["GOOGLE_PROJECT_ID"],
+    "private_key_id": os.environ["GOOGLE_PRIVATE_KEY_ID"],
+    "private_key": os.environ["GOOGLE_PRIVATE_KEY"].replace("\\n", "\n"),
+    "client_email": os.environ["GOOGLE_CLIENT_EMAIL"],
+    "client_id": os.environ["GOOGLE_CLIENT_ID"],
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": f"https://www.googleapis.com/robot/v1/metadata/x509/{os.environ['GOOGLE_CLIENT_EMAIL'].replace('@', '%40')}"
+}
 
-# === ДОСТУП К GOOGLE SHEETS ===
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-creds = Credentials.from_service_account_file("service_account.json", scopes=SCOPES)
+creds = service_account.Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
 gc = gspread.authorize(creds)
 sheet = gc.open_by_url(SPREADSHEET_URL).worksheet(SHEET_NAME)
 
